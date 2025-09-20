@@ -64,6 +64,7 @@ function Stopwatch() {
 
 export default function PlayPage() {
   const [items, setItems] = useState([])
+  const [isRevealed, setIsRevealed] = useState(false);
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_FINAL);
@@ -77,20 +78,32 @@ export default function PlayPage() {
     }
   }, []);
 
+  function handleRevealAnswer() {
+    setIsRevealed(true);
+
+    return(
+      <div className='answer'>
+        <strong>Answer:</strong> {item.answer}
+      </div>
+    )
+  }
+
   return (
-    <main className="min-h-screen flex items-center justify-center p-6">
+    <main className="min-h-screen flex flex-col items-center justify-center p-6">
       <section className='list-of-riddles'>
         <ul>
           {items.map((item, index) => (
-            <li key={index}>
-              <strong>Clue:</strong> {item.clue}
-              <br />
-              <strong>Answer:</strong> {item.answer}
+            <li key={index} className="flex flex-col">
+              {item.clue}<br />
+              {isRevealed && (<div><strong>Answer:</strong>{item.answer}</div>)}
+
             </li>
           ))}
         </ul>
+        <button onClick={handleRevealAnswer} className='reveal-button'>Reveal Answers</button>
   
       </section>
+      <br></br>
       <section className='stopwatch'>
         <Stopwatch />
       </section>
