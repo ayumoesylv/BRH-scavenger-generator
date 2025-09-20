@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-//import final list of clues from edit/page.jsx 
+
+const STORAGE_FINAL = "scavenger_final";
 
 function Stopwatch() {
   const router = useRouter();
@@ -62,9 +63,35 @@ function Stopwatch() {
 }
 
 export default function PlayPage() {
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    const raw = localStorage.getItem(STORAGE_FINAL);
+    if (!raw) return;
+
+    try {
+      const parsed = JSON.parse(raw);
+      setItems(parsed.items || []);
+    } catch (err) {
+      console.error("Failed to parse stored data:", err);
+    }
+  }, []);
+
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <section>
+      <section className='list-of-riddles'>
+        <ul>
+          {items.map((item, index) => (
+            <li key={index}>
+              <strong>Clue:</strong> {item.clue}
+              <br />
+              <strong>Answer:</strong> {item.answer}
+            </li>
+          ))}
+        </ul>
+  
+      </section>
+      <section className='stopwatch'>
         <Stopwatch />
       </section>
     </main>
