@@ -51,7 +51,7 @@ export default function EditPage() {
         <h1 className="text-2xl font-semibold">Edit Clues</h1>
         <p className="mt-2 text-sm opacity-80">
           No draft found. Go back to the{" "}
-          <a className="underline" href="/">generator</a>.
+          <a className="underline" href="/generate">generator</a>.
         </p>
       </main>
     );
@@ -94,7 +94,7 @@ export default function EditPage() {
 
       <div className="flex gap-3">
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/generate")}
           className="border rounded px-4 py-2"
         >
           Back
