@@ -8,18 +8,16 @@ const PLACES = [
   "Engineering Quad",
   "Arts Building",
   "Dining Hall",
-  "Campus Green"
+  "Campus Green",
 ];
-
-type Difficulty = "easy" | "medium" | "hard";
 
 export default function Home() {
   const [place, setPlace] = useState(PLACES[0]);
   const [groupSize, setGroupSize] = useState(3);
-  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
+  const [difficulty, setDifficulty] = useState("medium");
   const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<any[]|null>(null);
-  const [error, setError] = useState<string|null>(null);
+  const [items, setItems] = useState(null);
+  const [error, setError] = useState(null);
 
   async function handleGenerate() {
     setLoading(true); setError(null); setItems(null);
@@ -27,12 +25,12 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ place, groupSize, difficulty })
+        body: JSON.stringify({ place, groupSize, difficulty }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Request failed");
       setItems(data.items);
-    } catch (e: any) {
+    } catch (e) {
       setError(e.message);
     } finally {
       setLoading(false);
@@ -67,7 +65,7 @@ export default function Home() {
             min={1}
             max={50}
             value={groupSize}
-            onChange={(e) => setGroupSize(parseInt(e.target.value || "1"))}
+            onChange={(e) => setGroupSize(parseInt(e.target.value || "1", 10))}
             className="border rounded-lg p-2 w-full bg-white"
           />
         </label>
@@ -77,7 +75,7 @@ export default function Home() {
           <select
             className="border rounded-lg p-2 w-full bg-white"
             value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            onChange={(e) => setDifficulty(e.target.value)}
           >
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
