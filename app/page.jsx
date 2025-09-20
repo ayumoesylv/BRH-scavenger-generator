@@ -12,7 +12,7 @@ const PLACES = [
   "Arts Quad",
 ];
 
-const STORAGE_DRAFT = "scavenger_draft"; // place + group + difficulty + items
+const STORAGE_DRAFT = "scavenger_draft";
 
 export default function Home() {
   const router = useRouter();
