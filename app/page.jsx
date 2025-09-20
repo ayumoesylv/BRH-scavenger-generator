@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const PLACES = [
-  "Main Library",
-  "Student Union",
-  "Athletics Center",
-  "Engineering Quad",
-  "Arts Building",
-  "Dining Hall",
-  "Campus Green",
+  "Olin Library",
+  "Uris Library",
+  "Duffield Hall",
+  "Goldwin Smith Hall",
+  "Willard Straight Hall",
+  "Morrison Dining Hall",
+  "Arts Quad",
 ];
 
 const STORAGE_DRAFT = "scavenger_draft"; // place + group + difficulty + items

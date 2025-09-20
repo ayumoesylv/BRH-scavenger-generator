@@ -11,22 +11,21 @@ export default function EditPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    // Load draft from localStorage
     const raw = localStorage.getItem(STORAGE_DRAFT);
     if (!raw) return;
     try {
       const parsed = JSON.parse(raw);
-      // Ensure each item has the fields we want to edit
+      // Ensure each item has all fields we want to edit (answer added)
       const items = (parsed.items || []).map(it => ({
         title: it.title || "",
         clue: it.clue || "",
-        estimatedTimeMin: Number(it.estimatedTimeMin) || 5,
+        answer: it.answer || "",                // <-- NEW
         whyItFitsPlace: it.whyItFitsPlace || "",
         verificationHint: it.verificationHint || "",
       }));
       setDraft({ ...parsed, items });
     } catch {
-      // bad JSON -> go home
+      // bad JSON -> ignore
     }
   }, []);
 
@@ -42,7 +41,6 @@ export default function EditPage() {
   function handleSaveAndStart() {
     if (!draft) return;
     setSaving(true);
-    // Save final selection and go to /play
     localStorage.setItem(STORAGE_FINAL, JSON.stringify(draft));
     router.push("/play");
   }
@@ -68,11 +66,11 @@ export default function EditPage() {
 
       <ol className="space-y-4 list-decimal pl-6">
         {draft.items.map((it, i) => (
-          <li key={i} className="border rounded-lg p-3 bg-white shadow-sm space-y-2">
+          <li key={i} className="border rounded-lg p-3 bg-white shadow-sm space-y-3">
             <div className="font-medium">{it.title || `Item ${i + 1}`}</div>
 
             <label className="block">
-              <span className="text-xs uppercase tracking-wide">Clue</span>
+              <span className="text-xs uppercase tracking-wide">Clue (riddle)</span>
               <textarea
                 className="border rounded p-2 w-full"
                 value={it.clue}
@@ -81,13 +79,13 @@ export default function EditPage() {
             </label>
 
             <label className="block">
-              <span className="text-xs uppercase tracking-wide">Estimated time (min)</span>
+              <span className="text-xs uppercase tracking-wide">Answer</span>
               <input
-                type="number"
-                min={1}
+                type="text"
                 className="border rounded p-2 w-full"
-                value={it.estimatedTimeMin}
-                onChange={(e) => updateItem(i, "estimatedTimeMin", parseInt(e.target.value || "1", 10))}
+                value={it.answer}
+                onChange={(e) => updateItem(i, "answer", e.target.value)}
+                placeholder="e.g., 'the bronze statue by the fountain'"
               />
             </label>
           </li>
