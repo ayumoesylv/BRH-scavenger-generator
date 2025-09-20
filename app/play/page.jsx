@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 //import final list of clues from edit/page.jsx 
 
 function Stopwatch() {
+  const router = useRouter();
   const [isRunning, setIsRunning] = useState(false);
   const[elapsedTime, setElapsedTime] = useState(0);
   const intervalIdRef = useRef(null);
@@ -31,6 +32,8 @@ function Stopwatch() {
   }
   function stop(){
     setIsRunning(false)
+    router.push("/title");
+
     
   }
   function formatTime(){
@@ -38,7 +41,6 @@ function Stopwatch() {
     let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
     let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
     let seconds = Math.floor(elapsedTime / (1000) % 60);
-    let milliseconds = Math.floor((elapsedTime % 1000) / 10);
 
     hours = String(hours).padStart(2, "0")
     minutes = String(minutes).padStart(2, "0")
