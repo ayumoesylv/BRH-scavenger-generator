@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const PLACES = [
   "Main Library",
@@ -11,16 +12,18 @@ const PLACES = [
   "Campus Green",
 ];
 
+const STORAGE_DRAFT = "scavenger_draft"; // place + group + difficulty + items
+
 export default function Home() {
+  const router = useRouter();
   const [place, setPlace] = useState(PLACES[0]);
   const [groupSize, setGroupSize] = useState(3);
   const [difficulty, setDifficulty] = useState("medium");
   const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
 
   async function handleGenerate() {
-    setLoading(true); setError(null); setItems(null);
+    setLoading(true); setError(null);
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -29,7 +32,11 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Request failed");
-      setItems(data.items);
+
+      // Save draft to localStorage and go to /edit
+      const payload = { place, groupSize, difficulty, items: data.items || [] };
+      localStorage.setItem(STORAGE_DRAFT, JSON.stringify(payload));
+      router.push("/edit");
     } catch (e) {
       setError(e.message);
     } finally {
@@ -41,7 +48,7 @@ export default function Home() {
     <main className="max-w-2xl mx-auto p-6 space-y-5">
       <h1 className="text-3xl font-semibold">Campus Scavenger Generator</h1>
       <p className="text-sm text-neutral-600">
-        Pick a place and group size, then generate a list of safe, in-person items to find.
+        Pick a place and group size, then generate a list to edit and play.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -89,24 +96,10 @@ export default function Home() {
         disabled={loading}
         className="bg-black text-white rounded-xl px-4 py-2 disabled:opacity-60"
       >
-        {loading ? "Generating…" : "Generate list"}
+        {loading ? "Generating…" : "Generate"}
       </button>
 
       {error && <p className="text-red-600">{error}</p>}
-
-      {items && (
-        <ol className="space-y-3 list-decimal pl-6">
-          {items.map((it, i) => (
-            <li key={i} className="border rounded-xl p-3 bg-white shadow-sm">
-              <div className="font-medium">{it.title}</div>
-              <div className="text-sm opacity-80">{it.clue}</div>
-              <div className="text-xs mt-1">Why here: {it.whyItFitsPlace}</div>
-              <div className="text-xs">Est. time: {it.estimatedTimeMin} min</div>
-              <div className="text-xs">Verify: {it.verificationHint}</div>
-            </li>
-          ))}
-        </ol>
-      )}
     </main>
   );
 }
