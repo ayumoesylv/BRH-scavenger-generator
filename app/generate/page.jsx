@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <main className="max-w-2xl mx-auto p-6 space-y-5">
-      <h1 className="text-3xl font-semibold">Campus Scavenger Generator</h1>
+      <h1 className="text-3xl font-semibold">SeekOut - Cornell Scavenger Hunt Generator</h1>
       <p className="text-sm text-neutral-600">
         Pick a place and group size, then generate a list to edit and play.
       </p>

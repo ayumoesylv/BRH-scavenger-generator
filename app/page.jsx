@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
       <div className="max-w-2xl w-full text-center space-y-6">
-        <h1 className="text-3xl font-bold">Seek Out</h1>
+        <h1 className="text-3xl font-bold">SeekOut - Cornell Scavenger Hunt Generator</h1>
 
         <section className="bg-white border rounded-2xl shadow-sm text-left p-5 space-y-2">
           <h2 className="font-semibold">How to Play!</h2>
