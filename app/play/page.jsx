@@ -52,10 +52,10 @@ function Stopwatch() {
 
   return(
     <div className='stopwatch'>
-      <div className='display'>{formatTime()}</div>
+      <div className='border rounded-lg p-3 bg-white shadow-sm space-y-3 text-3xl font-semibold'>{formatTime()}</div>
       <div className='controls'>
-        <button onClick={start} className='start-button'>Start</button>
-        <button onClick={stop} className='stop-button'>Stop</button>
+        <button onClick={start} className='start-button border rounded-lg p-3 bg-white shadow-sm space-y-3'>Start</button>
+        <button onClick={stop} className='stop-button border rounded-lg p-3 bg-white shadow-sm space-y-3'>Stop</button>
       </div>
     </div>
   );
@@ -79,7 +79,7 @@ export default function PlayPage() {
   }, []);
 
   function handleRevealAnswer() {
-    setIsRevealed(true);
+    setIsRevealed(!isRevealed);
 
     return(
       <div className='answer'>
@@ -89,23 +89,28 @@ export default function PlayPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6">
+    <main className="min-h-screen flex flex-col items-center justify-center text-center p-6 space-y-6">
+      
+      <section className='stopwatch max-w-3xl mx-auto p-6 space-y-6'>
+        <Stopwatch />
+      </section>
+
+      <br></br>
+
       <section className='list-of-riddles'>
         <ul>
           {items.map((item, index) => (
-            <li key={index} className="flex flex-col">
+            <li key={index} className="border rounded-lg p-3 bg-white shadow-sm space-y-3 flex flex-col text-lg text-neutral-600">
               {item.clue}<br />
               {isRevealed && (<div><strong>Answer:</strong>{item.answer}</div>)}
 
             </li>
           ))}
         </ul>
-        <button onClick={handleRevealAnswer} className='reveal-button'>Reveal Answers</button>
+        <div>
+          {(!isRevealed) ? <button onClick={handleRevealAnswer} className='mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50'>Reveal Answers</button> : <button onClick={handleRevealAnswer} className='mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50'>Hide Answers</button>}
+        </div>
   
-      </section>
-      <br></br>
-      <section className='stopwatch'>
-        <Stopwatch />
       </section>
     </main>
   );
